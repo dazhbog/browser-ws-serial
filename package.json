@@ -1,0 +1,23 @@
+{
+  "name": "browser-ws-serial",
+  "version": "0.1",
+  "description": "Browser to serialport bridge based on websockets and Node.JS",
+  "main": "app.js",
+  "private": true,
+  "dependencies": {
+    "serialport": "4.0.1",
+    "socket.io": "2.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": "MG",
+  "license": "MIT",
+  "bugs": {
+    "url": ""
+  },
+  "homepage": "https://github.com/dazhbog/browser-ws-serial"
+}
