@@ -30,20 +30,29 @@ The server is now running.
 
 ### Usage
 
-Browser sends
+Browser emits - Node.JS receives / subscribes to
 ```
     cmd-serial-list
     cmd-serial-open
     cmd-serial-close
     cmd-serial-write
+
+    Built-in, on both sides
+    error
+    disconnect
 ```
 
-Browser receives / subscribes to
+Browser receives / subscribes to - Node.JS emits
 ```
     serial-list
     serial-open
     serial-close
     serial-data
+    serial-error
+
+    Built-in, on both sides
+    error
+    disconnect
 ```
 
 Examples coming soon.
