@@ -1,6 +1,6 @@
 # browser-ws-serial
 
-A Node.JS bridge that allows the browser to access serial ports over websockets.
+A Node.JS bridge that allows the browser to access serial ports over websockets. Uses serialport and socket.io
 
 ## Getting Started
 
@@ -12,9 +12,9 @@ These instructions will get you a copy of the project up and running on your loc
 
 A step by step series of examples that tell you how to get a development env running
 
-Download or Clone repository
 
 ```
+Download or Clone repository
 cd browser-ws serial
 npm install
 ```
@@ -46,7 +46,7 @@ Browser receives / subscribes to
     serial-data
 ```
 
-
+Examples coming soon.
 
 ## License
 
