@@ -1,6 +1,6 @@
 {
   "name": "browser-ws-serial",
-  "version": "0.1",
+  "version": "0.1.0",
   "description": "Browser to serialport bridge based on websockets and Node.JS",
   "main": "app.js",
   "private": true,
