@@ -98,7 +98,7 @@ io.on('connection', function(socket){
                       io.emit('serial-data', dataBuffer);
                       dataBuffer = null;
 
-                    }, 150);
+                    }, 100);
 
                 });
             });
