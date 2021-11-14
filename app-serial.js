@@ -6,6 +6,8 @@ Browser sends
     cmd-serial-open
     cmd-serial-close
     cmd-serial-write
+    exec nrfjprog.exe
+    exec nrfjprog -f nrf52 etc
 
 Browser receives / subscribes to
     serial-list
@@ -14,9 +16,12 @@ Browser receives / subscribes to
     serial-data
 
 */
+var net = require('net'); // server for oled 
 var serialport = require("serialport");
 var io         = require('socket.io')();
 var dataBuffer = null;
+var log = console.log;
+
 process.on('uncaughtException', function (error) {
     console.log(error.stack);
 });
@@ -45,6 +50,16 @@ io.on('connection', function(socket){
         } else {
 
         }
+    });
+
+    socket.on('pulse-terminal-cmd', function(terminalData){
+            
+            if (term_bridge_socket){
+                term_bridge_socket.write(terminalData+"");
+                console.log('Terminal inject:', terminalData, " [OK]");
+            } else {
+                console.log('Terminal inject:', terminalData, " [NOP]");
+            }
     });
 
     socket.on('cmd-serial-write', function(data){
@@ -110,3 +125,69 @@ io.on('connection', function(socket){
     });
 });
 io.listen(8989);
+log("Serial")
+log("Socket.io listening on ",8989)
+startOledBridge();
+startTermBridge();
+
+var IDLE_TIME = 100000;
+var dataBuffer =null;
+var counter=0;
+function startOledBridge(){
+        var oled_bridge_port = 4554;
+        net.createServer(function (s) {
+                    
+                    log("Oled client connected.. waiting for data..")
+
+                    s.setTimeout(IDLE_TIME, function(){   //idle timeout
+                         s.end(); //best close?
+                    });
+
+                    s.on('data', function (data) {
+                            log(">>[",counter++,"][",data.length,"]\n", data);
+                            if (io){
+                                io.emit('oled-data', new Buffer(data));
+                            }       
+                    });
+
+                    s.on('close', function () {
+                          
+                    });
+
+                    s.on('error', function () {
+                      
+                    });
+
+        }).listen(oled_bridge_port);
+        log("Oled bridge listening on ",oled_bridge_port)
+
+}
+
+var term_bridge_socket = null;
+function startTermBridge(){
+        var term_bridge_port = 4555;
+        net.createServer(function (s) {
+                    
+                    log("Terminal client connected.. ")
+                    s.active = 1;
+                    term_bridge_socket = s;
+                    s.setTimeout(IDLE_TIME, function(){   //idle timeout
+                         s.end(); //best close?
+                    });
+
+                    s.on('data', function (data) {
+                               
+                    });
+
+                    s.on('close', function () {
+                          term_bridge_socket = null;
+                    });
+
+                    s.on('error', function () {
+                      
+                    });
+
+        }).listen(term_bridge_port);
+        log("Terminal bridge listening on ",term_bridge_port)
+
+}
